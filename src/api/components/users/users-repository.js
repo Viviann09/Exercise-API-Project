@@ -32,6 +32,22 @@ async function createUser(name, email, password) {
   });
 }
 
+/**Prevent Duplicate Email
+ * @param {string} email - Email
+ * @param {string} password - Hashed password
+ * @returns {Promise}
+ */
+
+async function preventDuplicateEmail(email, password) {
+  const findDuplicate = await User.find({ email: email }).exec();
+
+  if (!findDuplicate) {
+    return true; //jika tidak ada email yang duplicate
+  } else {
+    return false; // jika ada email yang duplicate
+  }
+}
+
 /**
  * Update existing user
  * @param {string} id - User ID

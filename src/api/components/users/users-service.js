@@ -41,6 +41,28 @@ async function getUser(id) {
   };
 }
 
+/**Prevent Duplicate Email
+ * @param {string} email - Email
+ * @param {string} password - Hashed password
+ * @returns {Promise}
+ */
+
+async function preventDuplicateEmail(email, password) {
+  try {
+    const checkDuplicateEmail = await usersRepository.preventDuplicateEmail(
+      email,
+      password
+    );
+    if (!checkDuplicateEmail) {
+      return null;
+    } else {
+      return true;
+    }
+  } catch (error) {
+    return null;
+  }
+}
+
 /**
  * Create new user
  * @param {string} name - Name
