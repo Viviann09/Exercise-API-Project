@@ -65,6 +65,27 @@ async function createUser(request, response, next) {
   }
 }
 
+//Check email
+async function preventDuplicateEmail(emails) {
+  const checkDuplicateEmail = await usersService.preventDuplicateEmail(email);
+  if (checkDuplicate == true) {
+    throw errorResponder(errorTypes.EMAIL_ALREADY_TAKEN, 'Email already taken');
+  } else if (checkDuplicateEmail == false) {
+    const success = await usersService.preventDuplicateEmail(
+      name,
+      email,
+      password
+    );
+    if (!success) {
+      throw errorResponder(
+        errorTypes.UNPROCESSABLE_ENTITY,
+        'Failed to create user'
+      );
+    }
+    return response.status(200).json({ name, email });
+  }
+}
+
 /**
  * Handle update user request
  * @param {object} request - Express request object
