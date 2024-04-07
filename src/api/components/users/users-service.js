@@ -43,14 +43,14 @@ async function getUser(id) {
 
 /**Prevent Duplicate Email
  * @param {string} email - Email
- * @returns {boolean}}
+ * @returns {boolean}
  */
 
 async function preventDuplicateEmail(emails) {
   try {
     const checkDuplicateEmail =
-      await usersRepository.preventDuplicateEmail(email);
-    if (checkDuplicateEmail.length == 0) {
+      await usersRepository.preventDuplicateEmail(emails);
+    if (!checkDuplicateEmail) {
       return null;
     } else {
       return true;
@@ -130,6 +130,7 @@ module.exports = {
   getUsers,
   getUser,
   createUser,
+  preventDuplicateEmail,
   updateUser,
   deleteUser,
 };

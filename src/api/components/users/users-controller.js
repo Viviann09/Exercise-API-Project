@@ -1,5 +1,7 @@
 const usersService = require('./users-service');
 const { errorResponder, errorTypes } = require('../../../core/errors');
+const { name, email, password } = require('../../../models/users-schema');
+const { modelNames } = require('mongoose');
 
 /**
  * Handle get list of users request
@@ -66,23 +68,19 @@ async function createUser(request, response, next) {
 }
 
 //Check email
-async function preventDuplicateEmail(emails) {
+async function preventDuplicateEmail(email) {
   const checkDuplicateEmail = await usersService.preventDuplicateEmail(email);
-  if (checkDuplicate == true) {
+  if (checkDuplicateEmail == true) {
     throw errorResponder(errorTypes.EMAIL_ALREADY_TAKEN, 'Email already taken');
   } else if (checkDuplicateEmail == false) {
-    const success = await usersService.preventDuplicateEmail(
-      name,
-      email,
-      password
-    );
+    const success = await usersService.createUser(email);
     if (!success) {
       throw errorResponder(
-        errorTypes.UNPROCESSABLE_ENTITY,
-        'Failed to create user'
+        errorTypes.EMAIL_ALREADY_TAKEN,
+        'Failed to check email'
       );
     }
-    return response.status(200).json({ name, email });
+    return response.status(200).json(emai);
   }
 }
 
@@ -142,6 +140,7 @@ module.exports = {
   getUsers,
   getUser,
   createUser,
+  preventDuplicateEmail,
   updateUser,
   deleteUser,
 };

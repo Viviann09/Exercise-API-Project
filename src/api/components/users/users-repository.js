@@ -81,6 +81,7 @@ module.exports = {
   getUsers,
   getUser,
   createUser,
+  preventDuplicateEmail,
   updateUser,
   deleteUser,
 };

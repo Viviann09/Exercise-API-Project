@@ -1,15 +1,25 @@
 meta {
-  name: Get users
+  name: Post 1
   type: http
-  seq: 1
+  seq: 3
 }
 
-get {
+post {
   url: http://localhost:5000/api/users
-  body: none
+  "email": "admin@example.com",
+  "password": "123456"
+}http://localhost:5000/api/authentication/login
+  body: json
   auth: none
 }
 
 headers {
   Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwidXNlcklkIjoiNjYxMjQ5NGU1NDA5MjhlNzJmNGRlZmQ5IiwiaWF0IjoxNzEyNDc0NDYwLCJleHAiOjE3MTI1NjA4NjB9.hE07UlNCAh9sCEvJlKwrjny92ZWayGFCgF7J89_1Vuk
+}
+
+body:json {
+  {
+    "email": "admin@example.com",
+    "password": "123456"
+  }
 }
