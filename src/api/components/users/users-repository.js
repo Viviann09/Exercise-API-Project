@@ -69,6 +69,15 @@ async function updateUser(id, name, email) {
 }
 
 /**
+ * change password
+ * @param {string} password
+ * @returns {Promise}
+ */
+async function changePassword(password) {
+  return User.findOne({ password });
+}
+
+/**
  * Delete a user
  * @param {string} id - User ID
  * @returns {Promise}
@@ -83,5 +92,6 @@ module.exports = {
   createUser,
   preventDuplicateEmail,
   updateUser,
+  changePassword,
   deleteUser,
 };

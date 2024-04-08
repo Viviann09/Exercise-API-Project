@@ -107,6 +107,29 @@ async function updateUser(id, name, email) {
 }
 
 /**
+ * Check old password
+ * @param {string} password - old_password
+ * @param {string} password - new_Password
+ * @param {string} password - new_confirm_password
+ * @returns {object} An object containing, among others, the JWT token if the email and password are matched. Otherwise returns null.
+ */
+async function checkLoginCredentials(email, password) {
+  const user = await userRepository.getUserByEmail(email);
+  const userPassword = user ? user.password : '<RANDOM_PASSWORD_FILLER>';
+  const passwordChecked = await passwordMatched(password, userPassword);
+  if (user && passwordChecked) {
+    return {
+      email: user.email,
+      name: user.name,
+      user_id: user.id,
+      token: generateToken(user.email, user.id),
+    };
+  }
+
+  return null;
+}
+
+/**
  * Delete user
  * @param {string} id - User ID
  * @returns {boolean}
@@ -134,5 +157,6 @@ module.exports = {
   createUser,
   preventDuplicateEmail,
   updateUser,
+  checkLoginCredentials,
   deleteUser,
 };
