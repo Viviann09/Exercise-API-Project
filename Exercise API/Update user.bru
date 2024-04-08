@@ -1,14 +1,11 @@
 meta {
-  name: Post 1
+  name: Update user
   type: http
-  seq: 3
+  seq: 4
 }
 
-post {
-  url: http://localhost:5000/api/users
-  "email": "admin@example.com",
-  "password": "123456"
-}http://localhost:5000/api/authentication/login
+put {
+  url: http://localhost:5000/api/users/661386ed0b76cadb98fdf369
   body: json
   auth: none
 }
@@ -19,7 +16,7 @@ headers {
 
 body:json {
   {
-    "email": "admin@example.com",
-    "password": "123456"
+    "name": "Vivian",
+    "email": "vian@example.com"
   }
 }

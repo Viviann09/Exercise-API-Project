@@ -46,12 +46,14 @@ async function getUser(id) {
  * @returns {boolean}
  */
 
-async function preventDuplicateEmail(emails) {
+async function preventDuplicateEmail(email, password) {
   try {
-    const checkDuplicateEmail =
-      await usersRepository.preventDuplicateEmail(emails);
+    const checkDuplicateEmail = await usersRepository.preventDuplicateEmail(
+      email,
+      password
+    );
     if (!checkDuplicateEmail) {
-      return null;
+      return false;
     } else {
       return true;
     }
