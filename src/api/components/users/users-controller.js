@@ -118,6 +118,60 @@ async function updateUser(request, response, next) {
 }
 
 /**
+ * Handle change password
+ * @param {object} request - Express request object
+ * @param {object} response - Express response object
+ * @param {object} next - Express route middlewares
+ * @returns {object} Response object or pass an error to the next route
+ */
+
+async function changePassword(request, response, next) {
+  try {
+    const id = request.params.id;
+    const name = request.body.name;
+    const email = request.body.email;
+    const oldPassword = request.body.oldPassword;
+    const newPassword = request.body.newPassword;
+    const newConfirmPassword = request.body.newConfirmPassword;
+
+    const changePassword = await usersService.changePassword(password);
+    if (checkPassword == true) {
+      throw errorResponder(
+        errorTypes.UNPROCESSABLE_ENTITY,
+        'Failed to Change Password'
+      );
+    } else if (checkDuplicateEmail == true) {
+      const success = await usersService.changePassword(
+        id,
+        name,
+        email,
+        oldPassword,
+        newPassword,
+        newConfirmPassword
+      );
+      if (!success) {
+        throw errorResponder(
+          errorTypes.UNPROCESSABLE_ENTITY,
+          'Failed to Change Password'
+        );
+      }
+      return response
+        .status(200)
+        .json({
+          id,
+          name,
+          email,
+          oldPassword,
+          newPassword,
+          newConfirmPassword,
+        });
+    }
+  } catch (error) {
+    return next(error);
+  }
+}
+
+/**
  * Handle delete user request
  * @param {object} request - Express request object
  * @param {object} response - Express response object
@@ -147,5 +201,6 @@ module.exports = {
   getUser,
   createUser,
   updateUser,
+  changePassword,
   deleteUser,
 };

@@ -6,6 +6,18 @@ meta {
 
 post {
   url: http://localhost:5000/api/users
-  body: none
+  body: json
   auth: none
+}
+
+headers {
+  Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwidXNlcklkIjoiNjYxMjQ5NGU1NDA5MjhlNzJmNGRlZmQ5IiwiaWF0IjoxNzEyNTc0NTE5LCJleHAiOjE3MTI2NjA5MTl9.8qtANGhiKDN9RTf6YnvfylZ1GgEq8KOZIY2i-H33dK4
+}
+
+body:json {
+  {
+    "name": "Vivian",
+    "email": "vivian@example.com",
+    "password": "123456"
+  }
 }

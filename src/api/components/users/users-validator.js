@@ -22,26 +22,16 @@ module.exports = {
     },
   },
 
-  change_password: {
+  changePassword: {
     body: {
-      old_password: joi
+      oldPassword: joi.string().min(6).max(32).required().label('oldPassword'),
+      newPassword: joi.string().min(6).max(32).required().label('newPassword'),
+      newPasswordConfirm: joi
         .string()
         .min(6)
         .max(32)
         .required()
-        .label('old_password'),
-      new_password: joi
-        .string()
-        .min(6)
-        .max(32)
-        .required()
-        .label('new_password'),
-      new_password_confirm: joi
-        .string()
-        .min(6)
-        .max(32)
-        .required()
-        .label('new_password_confirm'),
+        .label('newPasswordConfirm'),
     },
   },
 };

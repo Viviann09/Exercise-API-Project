@@ -48,6 +48,15 @@ async function preventDuplicateEmail(email) {
 }
 
 /**
+ * Delete a user
+ * @param {string} id - User ID
+ * @returns {Promise}
+ */
+async function deleteUser(id) {
+  return User.deleteOne({ _id: id });
+}
+
+/**
  * Update existing user
  * @param {string} id - User ID
  * @param {string} name - Name
@@ -70,20 +79,22 @@ async function updateUser(id, name, email) {
 
 /**
  * change password
- * @param {string} password
- * @returns {Promise}
- */
-async function changePassword(password) {
-  return User.findOne({ password });
-}
-
-/**
- * Delete a user
  * @param {string} id - User ID
+ * @param {string} name - Name
+ * @param {string} email - Email
  * @returns {Promise}
  */
-async function deleteUser(id) {
-  return User.deleteOne({ _id: id });
+async function changePassword(id, name, email) {
+  return User.updateOne(
+    {
+      _id: id,
+    },
+    {
+      $set: {
+        password,
+      },
+    }
+  );
 }
 
 module.exports = {

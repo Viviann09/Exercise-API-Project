@@ -1,5 +1,6 @@
 const usersRepository = require('./users-repository');
 const { hashPassword } = require('../../../utils/password');
+const { passwordMatched } = require('../../../utils/password');
 
 /**
  * Get list of users
@@ -108,25 +109,30 @@ async function updateUser(id, name, email) {
 
 /**
  * Check old password
- * @param {string} password - old_password
- * @param {string} password - new_Password
- * @param {string} password - new_confirm_password
- * @returns {object} An object containing, among others, the JWT token if the email and password are matched. Otherwise returns null.
+ * @param {string} id
+ * @param {string} oldPassword
+ * *@param {string} newPassword
+ * @returns {object}
  */
-async function checkLoginCredentials(email, password) {
-  const user = await userRepository.getUserByEmail(email);
-  const userPassword = user ? user.password : '<RANDOM_PASSWORD_FILLER>';
-  const passwordChecked = await passwordMatched(password, userPassword);
-  if (user && passwordChecked) {
-    return {
-      email: user.email,
-      name: user.name,
-      user_id: user.id,
-      token: generateToken(user.email, user.id),
-    };
+async function checkOldPassword(id, oldPassword, newPassword) {
+  const hashedPassword = await hashPassword(password);
+  const user = await usersRepository.getUser(id);
+  // User not found
+  if (!user) {
+    return null;
   }
 
-  return null;
+  const checkOldPassword = await passwordMatched(oldPassword, user.password);
+  if (!checkOldPassword) {
+    return null;
+  }
+
+  try {
+    await usersRepository.changePassword(id, hashedPassword);
+  } catch (err) {
+    return null;
+  }
+  return true;
 }
 
 /**
@@ -157,6 +163,6 @@ module.exports = {
   createUser,
   preventDuplicateEmail,
   updateUser,
-  checkLoginCredentials,
+  checkOldPassword,
   deleteUser,
 };
