@@ -128,44 +128,39 @@ async function updateUser(request, response, next) {
 async function changePassword(request, response, next) {
   try {
     const id = request.params.id;
-    const name = request.body.name;
-    const email = request.body.email;
     const oldPassword = request.body.oldPassword;
     const newPassword = request.body.newPassword;
-    const newConfirmPassword = request.body.newConfirmPassword;
+    const newPasswordConfirm = request.body.newPasswordConfirm;
 
-    const changePassword = await usersService.changePassword(password);
-    if (checkPassword == true) {
+    if (oldPassword == newPassword) {
+      throw errorResponder(
+        errorTypes.INVALID_PASSWORD,
+        'Failed to Change Password Because Old Password Same With New Password'
+      );
+    }
+
+    if (newPassword != newPasswordConfirm) {
+      throw errorResponder(
+        errorTypes.INVALID_PASSWORD,
+        'Failed to Change Password Because New Password Different With New Password Confirm'
+      );
+    }
+
+    const success = await usersService.checkOldPassword(
+      id,
+      oldPassword,
+      newPassword,
+      newPasswordConfirm
+    );
+    if (!success) {
       throw errorResponder(
         errorTypes.UNPROCESSABLE_ENTITY,
         'Failed to Change Password'
       );
-    } else if (checkDuplicateEmail == true) {
-      const success = await usersService.changePassword(
-        id,
-        name,
-        email,
-        oldPassword,
-        newPassword,
-        newConfirmPassword
-      );
-      if (!success) {
-        throw errorResponder(
-          errorTypes.UNPROCESSABLE_ENTITY,
-          'Failed to Change Password'
-        );
-      }
-      return response
-        .status(200)
-        .json({
-          id,
-          name,
-          email,
-          oldPassword,
-          newPassword,
-          newConfirmPassword,
-        });
     }
+    return response
+      .status(200)
+      .json({ id, oldPassword, newPassword, newPasswordConfirm });
   } catch (error) {
     return next(error);
   }

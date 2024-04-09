@@ -111,11 +111,11 @@ async function updateUser(id, name, email) {
  * Check old password
  * @param {string} id
  * @param {string} oldPassword
- * *@param {string} newPassword
+ * @param {string} newPassword
  * @returns {object}
  */
 async function checkOldPassword(id, oldPassword, newPassword) {
-  const hashedPassword = await hashPassword(password);
+  const hashedPassword = await hashPassword(newPassword);
   const user = await usersRepository.getUser(id);
   // User not found
   if (!user) {

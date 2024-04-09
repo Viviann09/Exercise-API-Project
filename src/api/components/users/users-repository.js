@@ -79,12 +79,11 @@ async function updateUser(id, name, email) {
 
 /**
  * change password
- * @param {string} id - User ID
- * @param {string} name - Name
- * @param {string} email - Email
+ * @param {string} id
+ * @param {string} password
  * @returns {Promise}
  */
-async function changePassword(id, name, email) {
+async function changePassword(id, password) {
   return User.updateOne(
     {
       _id: id,
